@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --cream: #FFF8F0;
+  --sage: #A8B5A0;
+  --terracotta: #D4896B;
+  --warm-brown: #8B6F47;
+  --deep-brown: #3E2723;
+  --white: #FFFFFF;
+  --soft-shadow: rgba(0, 0, 0, 0.08);
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--cream);
+  color: var(--deep-brown);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+}
+
+button {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background: var(--sage);
+  color: white;
+}
