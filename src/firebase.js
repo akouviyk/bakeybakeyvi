@@ -1,10 +1,18 @@
-// Firebase configuration
-// Replace these with your actual Firebase config values
+// Firebase configuration for Bakey Bakey VI
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAScJgf5DZ_RYFOhmHaXnz1TviHHesTxt4",
+  authDomain: "bakeybakey-37fdc.firebaseapp.com",
+  projectId: "bakeybakey-37fdc",
+  storageBucket: "bakeybakey-37fdc.firebasestorage.app",
+  messagingSenderId: "1025853434886",
+  appId: "1:1025853434886:web:badd6e4277511f6002e787",
+  measurementId: "G-XYFN22D5LG"
 };
+
+export const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+export const auth = getAuth(app);

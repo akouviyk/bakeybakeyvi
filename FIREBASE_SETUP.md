@@ -61,6 +61,33 @@ export const firebaseConfig = {
 };
 ```
 
+## Step 5a: Enable review confirmation emails
+
+The visitor-review form uses Firebase's passwordless **Email link** sign-in
+method. Without this configuration, every review submission will fail before
+the confirmation email is sent.
+
+1. In Firebase Console, open **Authentication** > **Sign-in method**.
+2. Select **Email/Password** and enable **Email link (passwordless sign-in)**.
+3. Open **Authentication** > **Settings** > **Authorized domains**.
+4. Add the domain where this site is deployed (for example,
+   `akouviyk.github.io` for GitHub Pages). Do not include `https://` or a path.
+5. Save, deploy the site, and submit one test review.
+
+Firebase's default `bakeybakey-37fdc.firebaseapp.com` and
+`bakeybakey-37fdc.web.app` domains are already recognized, but a GitHub Pages
+or custom domain must be added explicitly.
+
+### If Firebase reports `auth/quota-exceeded`
+
+This is a Firebase project quota, not an invalid visitor email. The limit is
+shared by the whole project, so earlier tests, retries, other visitors, or an
+abuse-protection throttle can consume it even when the current visitor has
+only submitted once. Wait for the quota window to reset. If the site needs
+more confirmation emails, review the Authentication usage limits and
+billing/plan settings in the Firebase Console, then retry after the limit is
+increased.
+
 ## Step 6: Test the Connection
 
 1. Start your dev server:

@@ -4,41 +4,88 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'Holly Berry Pop';
+  src: url('/fonts/holly-berry-pop/HollyBerryPop-LVxvE.ttf') format('truetype'),
+       url('/fonts/holly-berry-pop/HollyBerryPop-PVxdZ.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --cream: #FFF8F0;
-  --sage: #A8B5A0;
-  --terracotta: #D4896B;
-  --warm-brown: #8B6F47;
-  --deep-brown: #3E2723;
-  --white: #FFFFFF;
-  --soft-shadow: rgba(0, 0, 0, 0.08);
+  /* Bakey Bakey VI — St. Thomas tropical palette */
+  --sand: #FFF3E2;
+  --sand-deep: #FCE7C8;
+  --ink: #2A1B14;
+  --guava: #FF4F6E;
+  --guava-deep: #E23A58;
+  --mango: #FFB020;
+  --mango-deep: #F2960B;
+  --lagoon: #00A6A6;
+  --lagoon-deep: #027E7E;
+  --palm: #2A6B4C;
+  --palm-deep: #1D4E38;
+  --paper: #FFFDF9;
+  --line: rgba(42, 27, 20, 0.12);
+  --shadow-soft: 0 20px 50px rgba(42, 27, 20, 0.12);
+  --shadow-pop: 0 12px 0 rgba(42, 27, 20, 0.14);
+
+  --font-display: 'Fraunces', 'Georgia', serif;
+  --font-body: 'Plus Jakarta Sans', 'Helvetica Neue', sans-serif;
+  --font-mono: 'Space Mono', 'Courier New', monospace;
+  --font-logo: 'Holly Berry Pop', 'Cormorant Garamond', serif;
+  --font-hero: 'Cormorant Garamond', 'Georgia', serif;
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--cream);
-  color: var(--deep-brown);
+  background: var(--sand);
+  color: var(--ink);
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 500;
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 button {
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Selection color */
 ::selection {
-  background: var(--sage);
+  background: var(--guava);
   color: white;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--lagoon);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
