@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import './GalleryCarousel.css';
 
 // Cloudflare Images URLs
@@ -41,6 +41,7 @@ const images = [
 function GalleryCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -67,6 +68,43 @@ function GalleryCarousel() {
     setCurrentIndex(index);
   };
 
+  const openLightbox = (index) => {
+    setIsAutoPlaying(false);
+    setLightboxIndex(index);
+  };
+
+  const closeLightbox = useCallback(() => {
+    setLightboxIndex(null);
+  }, []);
+
+  const showPrevInLightbox = useCallback((e) => {
+    e && e.stopPropagation();
+    setLightboxIndex((prev) => (prev - 1 + images.length) % images.length);
+  }, []);
+
+  const showNextInLightbox = useCallback((e) => {
+    e && e.stopPropagation();
+    setLightboxIndex((prev) => (prev + 1) % images.length);
+  }, []);
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showPrevInLightbox();
+      if (e.key === 'ArrowRight') showNextInLightbox();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [lightboxIndex, closeLightbox, showPrevInLightbox, showNextInLightbox]);
+
   return (
     <section id="gallery" className="gallery-carousel">
       <div className="section-container">
@@ -91,7 +129,13 @@ function GalleryCarousel() {
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {images.map((image, index) => (
-                <div key={index} className="carousel-slide">
+                <button
+                  key={index}
+                  type="button"
+                  className="carousel-slide carousel-slide-button"
+                  onClick={() => openLightbox(index)}
+                  aria-label={`View ${image.alt} full screen`}
+                >
                   <img
                     srcSet={`
                       https://imagedelivery.net/lzEB4WEiwuaDooGpiwwqdQ/${image.id}/w=400 400w,
@@ -104,7 +148,7 @@ function GalleryCarousel() {
                     alt={image.alt}
                     loading="lazy"
                   />
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -134,6 +178,61 @@ function GalleryCarousel() {
           presentation
         </p>
       </div>
+
+      {lightboxIndex !== null && (
+        <div
+          className="gallery-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={images[lightboxIndex].alt}
+          onClick={closeLightbox}
+        >
+          <button
+            type="button"
+            className="lightbox-close"
+            onClick={closeLightbox}
+            aria-label="Close full screen image"
+          >
+            <X size={28} />
+          </button>
+
+          <button
+            type="button"
+            className="lightbox-nav lightbox-prev"
+            onClick={showPrevInLightbox}
+            aria-label="Previous image"
+          >
+            <ChevronLeft size={32} />
+          </button>
+
+          <img
+            className="lightbox-image"
+            src={`https://imagedelivery.net/lzEB4WEiwuaDooGpiwwqdQ/${images[lightboxIndex].id}/w=1600`}
+            srcSet={`
+              https://imagedelivery.net/lzEB4WEiwuaDooGpiwwqdQ/${images[lightboxIndex].id}/w=800 800w,
+              https://imagedelivery.net/lzEB4WEiwuaDooGpiwwqdQ/${images[lightboxIndex].id}/w=1200 1200w,
+              https://imagedelivery.net/lzEB4WEiwuaDooGpiwwqdQ/${images[lightboxIndex].id}/w=1600 1600w,
+              https://imagedelivery.net/lzEB4WEiwuaDooGpiwwqdQ/${images[lightboxIndex].id}/w=2000 2000w
+            `}
+            sizes="95vw"
+            alt={images[lightboxIndex].alt}
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          <button
+            type="button"
+            className="lightbox-nav lightbox-next"
+            onClick={showNextInLightbox}
+            aria-label="Next image"
+          >
+            <ChevronRight size={32} />
+          </button>
+
+          <div className="lightbox-counter">
+            {lightboxIndex + 1} / {images.length}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
